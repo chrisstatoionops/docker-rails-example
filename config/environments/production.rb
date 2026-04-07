@@ -39,8 +39,12 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
   # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
 
-  # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  # Use S3 when S3_BUCKET is set to a real bucket; otherwise local disk (see config/storage.yml).
+  config.active_storage.service = if ENV["S3_BUCKET"].present? && ENV["S3_BUCKET"] != "unused"
+    :amazon
+  else
+    :local
+  end
 
   # Assume all access to the app is happening through a SSL-terminating reverse proxy.
   config.assume_ssl = true

@@ -15,6 +15,9 @@ gem "propshaft", "~> 1.1"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 
+# Active Storage S3 [https://github.com/aws/aws-sdk-ruby]
+gem "aws-sdk-s3", require: false
+
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", "~> 7.1"
 

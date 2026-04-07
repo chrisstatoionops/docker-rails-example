@@ -5,22 +5,17 @@ test:
 local:
   service: "Disk"
   root: "<%= Rails.root.join('storage') %>"
-# Use bin/rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
+
+# S3: set S3_BUCKET and AWS_REGION. Use AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY for keys,
+# or omit those to use the SDK default credential chain (IAM role, instance profile, etc.).
 amazon:
   service: S3
-#   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
-#   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
+<% if ENV["AWS_ACCESS_KEY_ID"].present? %>
+  access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>
+  secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %>
+<% end %>
+<% if ENV["AWS_SESSION_TOKEN"].present? %>
+  session_token: <%= ENV["AWS_SESSION_TOKEN"] %>
+<% end %>
   region: <%= ENV.fetch("AWS_REGION", "us-east-1") %>
   bucket: <%= ENV.fetch("S3_BUCKET", "unused") %>
-
-# Remember not to checkin your GCS keyfile to a repository
-# google:
-#   service: GCS
-#   project: your_project
-#   credentials: <%= Rails.root.join("path/to/gcs.keyfile") %>
-#   bucket: your_own_bucket-<%= Rails.env %>
-
-# mirror:
-#   service: Mirror
-#   primary: local
-#   mirrors: [ amazon, google, microsoft ]

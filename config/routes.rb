@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  root to: "pages#home"
+  root to: "uploads#index"
+
+  resources :uploads, only: %i[index create show]
 
   get "/up/", to: "up#index", as: :up
   get "/health", to: "up#index", as: :health

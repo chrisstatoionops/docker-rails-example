@@ -29,8 +29,12 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  # Store uploaded files on the local file system (see config/storage.yml for options).
-  config.active_storage.service = :local
+  # Use S3 when S3_BUCKET is set to a real bucket; otherwise local disk (see config/storage.yml).
+  config.active_storage.service = if ENV["S3_BUCKET"].present? && ENV["S3_BUCKET"] != "unused"
+    :amazon
+  else
+    :local
+  end
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -55,6 +59,12 @@ Rails.application.configure do
 
   # Disable digesting assets with an md5 tag.
   config.assets.digest = false
+
+  # Propshaft uses public/assets/.manifest.json when it exists (e.g. after
+  # `rails assets:precompile`). That static manifest omits gem-only assets such as
+  # hotwire_spark.js, which breaks Hotwire Spark and other engine scripts in dev.
+  # Point at a path that does not exist so Propshaft resolves assets dynamically.
+  config.assets.manifest_path = Rails.root.join("tmp", "propshaft-development.manifest.json")
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
