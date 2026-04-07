@@ -54,8 +54,8 @@ Rails.application.configure do
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
 
-  # Prevent health checks from clogging up the logs.
-  config.silence_healthcheck_path = "/up"
+  # Prevent health checks from clogging up the logs (/up is Docker Compose default; /health is common for ECS/ALB).
+  config.silence_healthcheck_path = %r{\A/(up|health)/?\z}
 
   # Disable caching for Action Mailer templates even if Action Controller
   # caching is enabled.
@@ -85,5 +85,5 @@ Rails.application.configure do
   # ]
   #
   # Skip DNS rebinding protection for the default health check endpoint.
-  # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  # config.host_authorization = { exclude: ->(request) { request.path.match?(%r{\A/(up|health)/?\z}) } }
 end
