@@ -39,6 +39,7 @@
             <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Size</th>
             <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Uploaded</th>
             <th scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Download</th>
+            <th scope="col" class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Delete</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
@@ -50,6 +51,11 @@
               <td class="px-4 py-3 text-sm text-gray-600"><%= l(upload.created_at, format: :short) %></td>
               <td class="px-4 py-3 text-sm text-right">
                 <%= link_to "Download", upload_path(upload), class: "text-gray-700 underline hover:text-gray-900" %>
+              </td>
+              <td class="px-4 py-3 text-sm text-right">
+                <%= button_to "Delete", upload_path(upload), method: :delete,
+                    form: { data: { turbo_confirm: "Delete this file from storage?" } },
+                    class: "text-red-700 underline hover:text-red-900 bg-transparent border-0 p-0 cursor-pointer text-sm font-sans" %>
               </td>
             </tr>
           <% end %>

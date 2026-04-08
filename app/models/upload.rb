@@ -1,5 +1,5 @@
 class Upload < ApplicationRecord
-  has_one_attached :file
+  has_one_attached :file, dependent: :purge
 
   validate :file_must_be_attached
 

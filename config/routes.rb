@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root to: "uploads#index"
 
-  resources :uploads, only: %i[index create show]
+  resources :uploads, only: %i[index create show destroy]
 
   get "/up/", to: "up#index", as: :up
   get "/health", to: "up#index", as: :health

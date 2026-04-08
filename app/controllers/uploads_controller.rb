@@ -25,6 +25,14 @@ class UploadsController < ApplicationController
     redirect_to rails_blob_path(upload.file, disposition: "attachment")
   end
 
+  def destroy
+    upload = Upload.find(params[:id])
+    upload.destroy!
+    redirect_to uploads_path, notice: "File deleted."
+  rescue ActiveRecord::RecordNotFound
+    redirect_to uploads_path, alert: "Upload not found.", status: :see_other
+  end
+
   private
 
   def upload_params
